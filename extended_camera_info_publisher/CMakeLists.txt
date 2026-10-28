@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.16)
 project(extended_camera_info_publisher)
 
 # Default to C++17
@@ -33,11 +33,16 @@ target_include_directories(${PROJECT_NAME}
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
         "$<INSTALL_INTERFACE:include>"
         )
-ament_target_dependencies(${PROJECT_NAME} PUBLIC ${DEPENDENCIES} rclcpp_components)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    rclcpp::rclcpp
+    rclcpp_components::component
+    ${extended_image_geometry_msgs_TARGETS}
+    cv_bridge::cv_bridge
+)
 
 # Composable
 #add_library(camera_info_publisher SHARED src/camera_info_publisher.cpp)
-#ament_target_dependencies(camera_info_publisher rclcpp rclcpp_components)
+#target_link_libraries(camera_info_publisher rclcpp::rclcpp rclcpp_components::component)
 #target_link_libraries(camera_info_publisher ${PROJECT_NAME})
 
 rclcpp_components_register_node(${PROJECT_NAME} PLUGIN "extended_image_geometry::CameraInfoPublisher" EXECUTABLE composable_camera_info_publisher_node)

@@ -4,7 +4,7 @@
 namespace extended_image_geometry {
 
 Camera::Camera(const rclcpp::Node::SharedPtr node, std::string ns)
-  : node_(node), ns_(ns), camera_info_received_(false), extended_camera_info_received_(false), it_(node)
+  : node_(node), executor_(std::make_shared<rclcpp::executors::SingleThreadedExecutor>()), ns_(ns), camera_info_received_(false), extended_camera_info_received_(false), it_(*node)
 {
   mask_msg_ = std::make_shared<sensor_msgs::msg::Image>();
   // Declare parameters
@@ -114,8 +114,7 @@ bool Camera::waitForCameraInfo(const rclcpp::Duration& timeout) const
       return true;
     }
     rate.sleep();
-    //rclcpp::spinOnce();
-    spin_some(node_);
+    executor_->spin_node_some(node_);
   }
   return cameraInfoReceived();
 }

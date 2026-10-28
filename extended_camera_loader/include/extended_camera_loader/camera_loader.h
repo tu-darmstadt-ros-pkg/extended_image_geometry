@@ -33,6 +33,7 @@ public:
   const std::vector<CameraPtr>& cameras() const;
 private:
   rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> executor_;
   std::vector<CameraPtr> cameras_;
 };
 

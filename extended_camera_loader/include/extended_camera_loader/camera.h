@@ -37,6 +37,7 @@ private:
 
   void loadCameraInfoFromParams();
   rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> executor_;
   std::string ns_;
 
   std::string image_topic_;

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.16)
 project(extended_camera_loader)
 #set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -32,8 +32,12 @@ target_include_directories(${PROJECT_NAME}
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
         "$<INSTALL_INTERFACE:include>"
         )
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
-ament_target_dependencies(${PROJECT_NAME} PUBLIC ${DEPENDENCIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC
+  Eigen3::Eigen
+  rclcpp::rclcpp
+  image_transport::image_transport
+  extended_camera_model::extended_camera_model
+)
 
 # Mark executables and/or libraries for installation
 install(TARGETS ${PROJECT_NAME} EXPORT export_${PROJECT_NAME} LIBRARY DESTINATION lib ARCHIVE DESTINATION lib RUNTIME DESTINATION bin)

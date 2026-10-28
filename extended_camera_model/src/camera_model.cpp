@@ -108,8 +108,7 @@ ColorVecType CameraModel::worldToColor(const Eigen::Vector3d& point3d, const cv:
     return color_vec;
   } else {
     confidence = INVALID; // kinda hacky?
-    ColorVecType color_vec;
-    return color_vec;
+    return ColorVecType{};
   }
 }
 

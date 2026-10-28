@@ -3,7 +3,7 @@
 namespace extended_image_geometry {
 
 CameraLoader::CameraLoader(const rclcpp::Node::SharedPtr node)
-  : node_(node)
+  : node_(node), executor_(std::make_shared<rclcpp::executors::SingleThreadedExecutor>())
 {
   node_->declare_parameter("cameras", std::vector<std::string>{});
   loadCameras();
@@ -34,8 +34,7 @@ bool CameraLoader::waitForCameraInfo(const rclcpp::Duration& timeout) const
       return true;
     }
     rate.sleep();
-    //rclcpp::spinOnce();
-    rclcpp::spin_some(node_);
+    executor_->spin_node_some(node_);
   }
   // Failed to receive all infos
   for (const CameraPtr& camera: cameras_) {
@@ -68,8 +67,7 @@ bool CameraLoader::waitForImages(const rclcpp::Duration& timeout) const
       return true;
     }
     rate.sleep();
-    //rclcpp::spinOnce();
-    spin_some(node_);
+    executor_->spin_node_some(node_);
   }
   // Failed to receive all infos
   for (const CameraPtr& camera: cameras_) {
